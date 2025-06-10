@@ -16,7 +16,7 @@ export class ChatService {
     this.hubConnection
       .start()
       .then(() => console.log('Conexão iniciada com o SignalR!'))
-      .catch((err: any) => {
+      .catch((err) => {
         console.log('Erro ao conectar com o SignalR: ', err);
       });
 
@@ -27,7 +27,7 @@ export class ChatService {
 
   public sendMessage(user: string, message: string) {
     this.hubConnection.invoke('SendMessage', user, message)
-      .catch((err : any) => {
+      .catch((err) => {
         console.error('Erro ao enviar mensagem: ', err);
 
       });
