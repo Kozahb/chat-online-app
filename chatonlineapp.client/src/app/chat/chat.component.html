@@ -1,0 +1,17 @@
+<div class="caht-container">
+  <h2>Chat Online</h2>
+
+  <div class="messages">
+    <div *ngFor="let msg of messages" class="message-item">
+      <strong>{{msg.user}}:</strong> {{msg.text}}
+    </div>
+  </div>
+
+  <div class="input-area">
+    <input type="text"[(ngModel)]="userName" placeholder="Seu nome" />
+    <input type="text"[(ngModel)]="message" placeholder="Digite sua mensagem" (keyup.enter)="sendMessage()" />
+    <button (click)="sendMessage()" >Enviar</button>
+  </div>
+</div>
+
+

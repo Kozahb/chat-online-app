@@ -1,7 +1,18 @@
-import { platformBrowser } from '@angular/platform-browser';
-import { AppModule } from './app/app.module';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { provideRouter, Routes } from '@angular/router';
+import { ChatComponent } from './chat.component';
 
-platformBrowser().bootstrapModule(AppModule, {
-  ngZoneEventCoalescing: true,
-})
-  .catch(err => console.error(err));
+const appRoutes: Routes = [
+  { path: '', redirectTo: '/chat', pathMatch: 'full' },
+  { path: 'chat', component: ChatComponent },
+];
+
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(appRoutes) // Fornece as rotas para a aplicação
+    // Outros providers globais, como ChatService (se não tiver providedIn: 'root')
+    // Embora ChatService com providedIn: 'root' já seja injetável em qualquer lugar
+  ]
+}).catch(err => console.error(err));

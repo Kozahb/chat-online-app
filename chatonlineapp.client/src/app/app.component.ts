@@ -1,19 +1,20 @@
-import { ChatService } from './services/chat'; 
+import { ChatService } from './services/chat';
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
-import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet, RouterModule } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
   standalone: true,
-  styleUrl: './app.component.css',
   imports: [
     CommonModule,
+    RouterOutlet,
     RouterModule
-  ]
+  ],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 
 })
 export class AppComponent implements OnInit {
@@ -27,5 +28,5 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.chatService.startConnection();
   }
- 
+
 }

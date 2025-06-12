@@ -1,29 +1,34 @@
-using ChatOnlineApp.Server;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SpaServices.Extensions;
-
+using ChatOnlineApp.Server.Hubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 
-
-
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllersWithViews();
-builder.Services.AddSignalR();  
-builder.Services.AddSpaStaticFiles(configuration =>{
-    configuration.RootPath = "ClientApp/dist/client-app";
-    
+builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+    .WithOrigins("https://localhost:4200")
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials());
 });
 
+
+builder.Services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = "ClientApp/dist/client-app";
+
+});
 var app = builder.Build();
-app.UseDefaultFiles();
-app.UseStaticFiles();
-app.UseRouting();
+
 
 
 if (app.Environment.IsDevelopment())
@@ -33,6 +38,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.UseCors("CorsPolicy");
+
+app.UseRouting();
 
 app.UseAuthorization();
 
