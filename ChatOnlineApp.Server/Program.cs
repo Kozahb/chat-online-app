@@ -22,6 +22,7 @@ builder.Services.AddCors(options =>
 });
 
 
+
 builder.Services.AddSpaStaticFiles(configuration =>
 {
     configuration.RootPath = "ClientApp/dist/client-app";

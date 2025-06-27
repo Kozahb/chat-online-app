@@ -1,0 +1,121 @@
+/* Reset básico */
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f1f1f1;
+}
+
+/* Container geral */
+.chat-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Caixa de chat */
+.chat-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título */
+.chat-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #333;
+}
+
+/* Status de conexão */
+.connection-status {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 10px;
+}
+
+.connected {
+  color: green;
+}
+
+.reconnecting {
+  color: goldenrod;
+}
+
+.disconnected {
+  color: red;
+}
+
+/* Formulário */
+.chat-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.chat-inputs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  transition: border-color 0.3s;
+}
+
+  input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+/* Botão de envio */
+button {
+  padding: 0.8rem;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+
+/* Área de mensagens */
+.chat-messages {
+  margin-top: 1.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+}
+
+  .chat-messages p {
+    margin: 0.5rem 0;
+  }
+
+  .chat-messages strong {
+    color: #007bff;
+  }

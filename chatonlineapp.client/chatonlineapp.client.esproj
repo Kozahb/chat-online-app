@@ -7,4 +7,7 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\chatonlineapp.client\</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="ChatHub.cs" />
+  </ItemGroup>
 </Project>

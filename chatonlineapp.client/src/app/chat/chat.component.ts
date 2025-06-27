@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ChatService } from '../services/chat'; 
+import { ChatService, ConnectionStatus } from '../services/chat';
 
 interface Message {
   user: string;
@@ -19,26 +19,31 @@ interface Message {
   ]
 })
 export class ChatComponent implements OnInit, OnDestroy {
-  userName: string = 'User';
+  userName: string = '';
   message: string = '';
   messages: Message[] = [];
 
+  connectionStatus: ConnectionStatus = 'disconnected';
   constructor(private chatService: ChatService) { }
 
   ngOnInit(): void {
-      this.chatService.addReceiveMessageListener((receivedUser: string, receivedMessage: string) => {
+    this.chatService.connectionStatus$.subscribe(status => {
+      this.connectionStatus = status;
+    });
+
+    this.chatService.addReceiveMessageListener((receivedUser: string, receivedMessage: string) => {
       this.messages.push({ user: receivedUser, text: receivedMessage });
     });
   }
 
-  ngOnDestroy(): void {
-    //Complementar
-  }
+ngOnDestroy(): void {
+  //Complementar futuro unsubscribe
+}
 
-  sendMessage(): void {
-    if (this.userName && this.message) {
-      this.chatService.sendMessage(this.userName, this.message);
-      this.message = '';
-    }
+sendMessage(): void {
+  if(this.userName && this.message) {
+  this.chatService.sendMessage(this.userName, this.message);
+  this.message = '';
+}
   }
 }

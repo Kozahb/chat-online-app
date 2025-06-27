@@ -1,17 +1,28 @@
-<div class="caht-container">
-  <h2>Chat Online</h2>
+<div class="chat-container">
+  <div class="chat-box">
+    <h2 class="chat-title">Chat Online</h2>
 
-  <div class="messages">
-    <div *ngFor="let msg of messages" class="message-item">
-      <strong>{{msg.user}}:</strong> {{msg.text}}
+    <!-- status de conexão -->
+    <div class="connection-status" [ngClass]="connectionStatus">
+      <span *ngIf="connectionStatus === 'connected'">🟢 Connected</span>
+      <span *ngIf="connectionStatus === 'reconnecting'">🟡 Reconnecting...</span>
+      <span *ngIf="connectionStatus === 'disconnected'">🔴 Disconnected</span>
+    </div>
+
+    <!-- formulário de mensagens -->
+    <form class="chat-form" (ngSubmit)="sendMessage()">
+      <div class="chat-inputs">
+        <input type="text" [(ngModel)]="userName" name="userName" placeholder="Your name" required />
+        <input type="text" [(ngModel)]="message" name="message" placeholder="Your message" required />
+      </div>
+      <button type="submit" [disabled]="connectionStatus !== 'connected'">Send</button>
+    </form>
+
+    <!-- mensagens -->
+    <div class="chat-messages">
+      <p *ngFor="let msg of messages">
+        <strong>{{ msg.user }}:</strong> {{ msg.text }}
+      </p>
     </div>
   </div>
-
-  <div class="input-area">
-    <input type="text"[(ngModel)]="userName" placeholder="Seu nome" />
-    <input type="text"[(ngModel)]="message" placeholder="Digite sua mensagem" (keyup.enter)="sendMessage()" />
-    <button (click)="sendMessage()" >Enviar</button>
-  </div>
 </div>
-
-

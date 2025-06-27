@@ -20,13 +20,7 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'chatonlineapp.client';
 
-  constructor(private chatService: ChatService) {
-
-
+  ngOnInit(): void {
+    
   }
-
-  ngOnInit() {
-    this.chatService.startConnection();
-  }
-
 }
