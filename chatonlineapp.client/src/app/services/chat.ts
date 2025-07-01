@@ -2,22 +2,22 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
 
-export type ConnectionStatus = 'connected' | 'reconnecting' | 'disconnected'
-
+export type ConnectionStatus = 'connected' | 'reconnecting' | 'disconnected';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
   private hubConnection!: signalR.HubConnection;
-  private readonly hubUrl = 'https://localhost:5158/chatHub'; // ajuste a URL conforme necessário
+  private readonly hubUrl = 'https://localhost:7002/chatHub';
 
-  public connectionStatus$ = new BehaviorSubject<ConnectionStatus>('disconnected')
+  public connectionStatus$ = new BehaviorSubject<ConnectionStatus>('disconnected');
+
   constructor() {
     this.startConnection();
   }
 
-  public startConnection(): void {
+  private startConnection(): void {
     if (this.hubConnection) return;
 
     this.hubConnection = new signalR.HubConnectionBuilder()
@@ -28,15 +28,22 @@ export class ChatService {
 
     this.hubConnection
       .start()
-      .then(() => console.log('✅ SignalR connected successfully.'))
-      .catch(err => console.error('❌ SignalR connection error:', err));
+      .then(() => {
+        console.log('✅ SignalR connected successfully.');
+        this.connectionStatus$.next('connected');
+      })
+      .catch(err => {
+        console.error('❌ SignalR connection error:', err);
+        this.connectionStatus$.next('disconnected');
+      });
 
-    this.registerReconnectEvents();
+    this.registerConnectionEvents();
   }
 
-  private registerReconnectEvents(): void {
+  private registerConnectionEvents(): void {
     this.hubConnection.onreconnecting(error => {
       console.warn('🔄 Reconnecting...', error);
+      this.connectionStatus$.next('reconnecting');
     });
 
     this.hubConnection.onreconnected(connectionId => {
@@ -46,7 +53,7 @@ export class ChatService {
 
     this.hubConnection.onclose(error => {
       console.error('❌ Connection closed unexpectedly:', error);
-      this.connectionStatus$.next('disconnected')
+      this.connectionStatus$.next('disconnected');
     });
   }
 
@@ -55,7 +62,7 @@ export class ChatService {
   }
 
   public sendMessage(user: string, message: string): void {
-    if (!this.hubConnection || this.hubConnection.state !== signalR.HubConnectionState.Connected) {
+    if (this.hubConnection?.state !== signalR.HubConnectionState.Connected) {
       console.error('❌ Cannot send message. Not connected to SignalR.');
       return;
     }

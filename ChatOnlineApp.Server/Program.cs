@@ -28,6 +28,7 @@ builder.Services.AddSpaStaticFiles(configuration =>
     configuration.RootPath = "ClientApp/dist/client-app";
 
 });
+
 var app = builder.Build();
 
 
@@ -42,20 +43,25 @@ app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-app.UseCors("CorsPolicy");
 
 app.UseRouting();
 
+app.UseCors("CorsPolicy");
+
 app.UseAuthorization();
 
-app.MapControllers();
-app.MapHub<ChatHub>("/chatHub");
-
-app.MapFallbackToFile("/index.html");
+// Agrupa todos os endpoints do backend aqui para ter mais
+// clareza e um controle maior sobre a ordem de excecução =)
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<ChatHub>("/chatHub"); // <- Rota do SignalR
+    endpoints.MapFallbackToFile("/index.html");
+});
 
 app.UseSpa(spa =>
 {
-    spa.Options.SourcePath = "Client app";
+    spa.Options.SourcePath = "ClientApp";
     if (app.Environment.IsDevelopment())
     {
         spa.UseProxyToSpaDevelopmentServer("https://localhost:4200");
